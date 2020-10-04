@@ -1,31 +1,26 @@
 import { ModelTypes } from "./model.types";
-import { col, parseCssObjectToString, row } from "./utils";
+import { TitleBlock } from "./block/title-block";
+import { TextBlock } from "./block/text-block";
+import { ColumnsBlock } from "./block/columns-block";
+import { ImageBlock } from "./block/image-block";
 
-export const modelFactory = {
+export const defaultModelFactory = {
     [ModelTypes.TITLE]: {
-        toHtml: block => {
-            const {tag = 'h1', styles = ''} = block.options;
-            return row(col(`<${tag}>${block.value}<${tag}/>`), parseCssObjectToString(styles))
-        }
+        create: (value, options) => new TitleBlock(value, options)
     },
+
     [ModelTypes.TEXT]: {
-        toHtml: block => row(col(`<p>${block.value}</p>`), parseCssObjectToString(block?.options?.styles))
+        create: (value, options) => new TextBlock(value, options)
     },
+
     [ModelTypes.COLUMNS]: {
-        toHtml: block => row(
-            block.value
-                .map(col)
-                .join(''),
-            parseCssObjectToString(block.options?.styles)
-        )
+        create: (value, options) => new ColumnsBlock(value, options)
     },
+
     [ModelTypes.IMAGE]: {
-        toHtml: block => {
-            const {styles = '', imageStyles = '', alt = ''} = block.options
-            return row(
-                `<img src="${block.value}" alt="${alt}" style="${parseCssObjectToString(imageStyles)}"/>`,
-                parseCssObjectToString(styles)
-            )
-        }
-    }
+        create: (value, options) => new ImageBlock(value, options)
+    },
+}
+
+export class modelFactory {
 }
