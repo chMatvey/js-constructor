@@ -1,7 +1,10 @@
 export class Block {
-    constructor(type, value, options) {
-        this.type = type
+    constructor(value, options) {
         this.value = value
         this.options = options
+    }
+
+    toHtml() {
+        throw new Error('Not implemented method')
     }
 }
